@@ -150,11 +150,4 @@ This project directly aligns with:
 
 > AI Governance Co-Pilot is a secure, AI-powered intelligence platform that helps public leaders make faster, smarter, data-driven decisions using unified constituency-level insights.
 
----
 
-If you want next, I can explain:
-
-* How it works technically
-* What makes it innovative
-* Or how to simplify it for a powerful pitch opening
-* Or how to build MVP in 48 hours
