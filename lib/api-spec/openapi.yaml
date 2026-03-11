@@ -1,22 +1,33 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AI Governance Co-Pilot API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: complaints
+    description: Citizen complaint management
+  - name: dashboard
+    description: Dashboard metrics and analytics
+  - name: documents
+    description: Document upload and summarization
+  - name: speech
+    description: Speech generation
+  - name: alerts
+    description: Predictive alerts
+  - name: booths
+    description: Booth analytics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +35,187 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /complaints/ingest:
+    post:
+      operationId: ingestComplaint
+      tags: [complaints]
+      summary: Ingest and classify a new complaint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComplaintInput"
+      responses:
+        "201":
+          description: Complaint classified and saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplaintResult"
+
+  /complaints:
+    get:
+      operationId: listComplaints
+      tags: [complaints]
+      summary: List complaints with optional filters
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: urgency
+          in: query
+          schema:
+            type: string
+        - name: boothId
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of complaints
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplaintListResponse"
+
+  /dashboard/{constituencyId}:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get full dashboard metrics for a constituency
+      parameters:
+        - name: constituencyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardMetrics"
+
+  /dashboard/heatmap:
+    get:
+      operationId: getHeatmap
+      tags: [dashboard]
+      summary: Get heatmap data for complaint visualization
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: Heatmap data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatmapResponse"
+
+  /dashboard/category-breakdown:
+    get:
+      operationId: getCategoryBreakdown
+      tags: [dashboard]
+      summary: Get complaint counts by category
+      responses:
+        "200":
+          description: Category breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryBreakdownResponse"
+
+  /files/summarize:
+    post:
+      operationId: summarizeDocument
+      tags: [documents]
+      summary: Summarize an uploaded government document (text-based)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocumentSummarizeInput"
+      responses:
+        "200":
+          description: Document summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentSummary"
+
+  /speech/generate:
+    post:
+      operationId: generateSpeech
+      tags: [speech]
+      summary: Generate a political speech using constituency data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SpeechInput"
+      responses:
+        "200":
+          description: Generated speech
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpeechResult"
+
+  /alerts:
+    get:
+      operationId: getAlerts
+      tags: [alerts]
+      summary: Get predictive alerts for emerging issues
+      responses:
+        "200":
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertsResponse"
+
+  /booth/{boothId}/analytics:
+    get:
+      operationId: getBoothAnalytics
+      tags: [booths]
+      summary: Get analytics for a specific booth
+      parameters:
+        - name: boothId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Booth analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoothAnalytics"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +226,405 @@ components:
       required:
         - status
 
+    ComplaintInput:
+      type: object
+      properties:
+        citizenName:
+          type: string
+        complaintText:
+          type: string
+        boothId:
+          type: string
+        location:
+          type: string
+      required:
+        - complaintText
+
+    ComplaintResult:
+      type: object
+      properties:
+        complaintId:
+          type: integer
+        category:
+          type: string
+        subcategory:
+          type: string
+        urgency:
+          type: string
+        urgencyScore:
+          type: number
+        department:
+          type: string
+        affectedArea:
+          type: string
+        estimatedResolutionTime:
+          type: string
+        status:
+          type: string
+      required:
+        - complaintId
+        - category
+        - urgency
+        - urgencyScore
+        - department
+
+    Complaint:
+      type: object
+      properties:
+        complaintId:
+          type: integer
+        citizenName:
+          type: string
+        complaintText:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        urgency:
+          type: string
+        urgencyScore:
+          type: number
+        department:
+          type: string
+        affectedArea:
+          type: string
+        boothId:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - complaintId
+        - complaintText
+        - category
+        - urgency
+        - urgencyScore
+        - department
+        - status
+        - createdAt
+
+    ComplaintListResponse:
+      type: object
+      properties:
+        complaints:
+          type: array
+          items:
+            $ref: "#/components/schemas/Complaint"
+        total:
+          type: integer
+      required:
+        - complaints
+        - total
+
+    DashboardMetrics:
+      type: object
+      properties:
+        constituencyId:
+          type: string
+        healthScore:
+          type: number
+        healthStatus:
+          type: string
+        totalComplaints:
+          type: integer
+        resolvedComplaints:
+          type: integer
+        activeAlerts:
+          type: integer
+        sentimentScore:
+          type: number
+        schemeCoverage:
+          type: number
+        resolutionRate:
+          type: number
+        complaintsThisWeek:
+          type: integer
+        complaintsLastWeek:
+          type: integer
+        weekOverWeekChange:
+          type: number
+        categoryBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        recentComplaints:
+          type: array
+          items:
+            $ref: "#/components/schemas/Complaint"
+        boothMetrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoothMetric"
+      required:
+        - constituencyId
+        - healthScore
+        - healthStatus
+        - totalComplaints
+        - resolvedComplaints
+        - activeAlerts
+        - sentimentScore
+        - schemeCoverage
+        - resolutionRate
+        - complaintsThisWeek
+        - complaintsLastWeek
+        - weekOverWeekChange
+        - categoryBreakdown
+        - recentComplaints
+        - boothMetrics
+
+    CategoryCount:
+      type: object
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
+        percentage:
+          type: number
+      required:
+        - category
+        - count
+        - percentage
+
+    BoothMetric:
+      type: object
+      properties:
+        boothId:
+          type: string
+        boothName:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        complaintCount:
+          type: integer
+        resolvedComplaints:
+          type: integer
+        sentimentScore:
+          type: number
+        healthScore:
+          type: number
+        coveragePercentage:
+          type: number
+        urgencyLevel:
+          type: string
+      required:
+        - boothId
+        - boothName
+        - lat
+        - lng
+        - complaintCount
+        - resolvedComplaints
+        - sentimentScore
+        - healthScore
+        - coveragePercentage
+        - urgencyLevel
+
+    HeatmapResponse:
+      type: object
+      properties:
+        booths:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoothMetric"
+        totalComplaints:
+          type: integer
+        period:
+          type: string
+      required:
+        - booths
+        - totalComplaints
+        - period
+
+    CategoryBreakdownResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        total:
+          type: integer
+      required:
+        - categories
+        - total
+
+    DocumentSummarizeInput:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        documentType:
+          type: string
+      required:
+        - content
+
+    DocumentSummary:
+      type: object
+      properties:
+        title:
+          type: string
+        documentType:
+          type: string
+        points:
+          type: array
+          items:
+            type: string
+        keyEntities:
+          type: array
+          items:
+            type: string
+        sentiment:
+          type: string
+        wordCount:
+          type: integer
+      required:
+        - points
+        - keyEntities
+        - sentiment
+        - wordCount
+
+    SpeechInput:
+      type: object
+      properties:
+        topic:
+          type: string
+        audienceType:
+          type: string
+        constituencyId:
+          type: string
+        duration:
+          type: string
+      required:
+        - topic
+        - audienceType
+
+    SpeechResult:
+      type: object
+      properties:
+        speech:
+          type: string
+        wordCount:
+          type: integer
+        keyPoints:
+          type: array
+          items:
+            type: string
+        dataPointsUsed:
+          type: array
+          items:
+            type: string
+      required:
+        - speech
+        - wordCount
+        - keyPoints
+        - dataPointsUsed
+
+    Alert:
+      type: object
+      properties:
+        alertId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        riskLevel:
+          type: string
+        category:
+          type: string
+        affectedArea:
+          type: string
+        changePercentage:
+          type: number
+        recommendedAction:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - alertId
+        - title
+        - description
+        - riskLevel
+        - category
+        - affectedArea
+        - changePercentage
+        - recommendedAction
+        - createdAt
+
+    AlertsResponse:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Alert"
+        totalAlerts:
+          type: integer
+        highRiskCount:
+          type: integer
+      required:
+        - alerts
+        - totalAlerts
+        - highRiskCount
+
+    BoothAnalytics:
+      type: object
+      properties:
+        boothId:
+          type: string
+        boothName:
+          type: string
+        healthScore:
+          type: number
+        sentimentScore:
+          type: number
+        complaintCount:
+          type: integer
+        resolvedComplaints:
+          type: integer
+        resolutionRate:
+          type: number
+        coveragePercentage:
+          type: number
+        topIssues:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        trend:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendPoint"
+      required:
+        - boothId
+        - boothName
+        - healthScore
+        - sentimentScore
+        - complaintCount
+        - resolvedComplaints
+        - resolutionRate
+        - coveragePercentage
+        - topIssues
+        - trend
+
+    TrendPoint:
+      type: object
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+      required:
+        - date
+        - count

@@ -1,0 +1,414 @@
+I carefully read your hackathon document ****. Below is a **single structured prompt you can paste into the Replit Agent** so it automatically builds the full prototype described in the document.
+
+This prompt translates the **entire architecture, features, tech stack, APIs, and demo flow** from the PDF into instructions an AI coding agent can follow.
+
+---
+
+# Replit Agent Prompt (Paste This)
+
+You are building a full-stack AI application called **AI Governance Co-Pilot**.
+
+The goal is to build a **working hackathon prototype** of an AI-powered governance intelligence system for political leaders and administrators.
+
+The system converts citizen complaints, documents, and public data into actionable insights through dashboards, AI models, and predictive alerts.
+
+Follow the exact architecture and feature requirements below.
+
+---
+
+# System Overview
+
+Build an **AI Governance Intelligence Operating System** that allows leaders to:
+
+1. Monitor citizen complaints
+2. Visualize issues geographically
+3. Summarize government documents
+4. Generate speeches using real data
+5. Predict emerging governance issues
+6. Compute constituency health scores
+
+The system must include a **dashboard, AI backend, complaint processing engine, and predictive analytics modules**.
+
+The prototype should be optimized for a hackathon demo.
+
+The system architecture described in the research document contains **data ingestion, AI processing, dashboards, and governance applications**. 
+
+---
+
+# Technology Stack
+
+Use the following stack.
+
+Frontend
+
+* Next.js 14
+* Tailwind CSS
+* Recharts
+* Leaflet.js or Mapbox GL JS
+
+Backend
+
+* FastAPI (Python)
+* JWT Authentication
+
+AI
+
+* HuggingFace Transformers
+* LangChain
+* sentence-transformers
+* FAISS vector database
+
+Databases
+
+* PostgreSQL (structured data)
+* MongoDB (documents)
+* FAISS (vector search)
+
+Deployment
+
+* Docker
+* Docker Compose
+
+---
+
+# Core Features To Build
+
+Implement the following features exactly.
+
+---
+
+# 1 AI Complaint Intelligence System
+
+Input:
+Citizen complaint text.
+
+Example:
+
+```
+Water supply irregular for 3 weeks in Ward 12
+```
+
+Process the complaint using NLP.
+
+Steps:
+
+1 classify complaint category
+2 detect urgency
+3 extract affected location
+4 assign department
+5 estimate resolution time
+
+Output example:
+
+```
+{
+ category: "Infrastructure",
+ subcategory: "Water Supply",
+ urgency: "High",
+ urgency_score: 0.85,
+ department: "Water Department",
+ affected_area: "Ward 12",
+ estimated_resolution_time: "48 hours"
+}
+```
+
+Use HuggingFace BERT or DistilBERT.
+
+Store complaints in PostgreSQL.
+
+---
+
+# 2 Interactive Complaint Heatmap Dashboard
+
+Create a map visualization.
+
+Use Leaflet or Mapbox.
+
+The map must show complaint density.
+
+Color coding:
+
+Red → critical
+Orange → high
+Yellow → medium
+Green → low
+
+Interactive features:
+
+* drill down from constituency → ward → booth
+* popup showing complaint counts
+* time filters
+* export report
+
+---
+
+# 3 AI Document Summarizer
+
+Allow users to upload PDFs.
+
+Pipeline:
+
+1 extract text using PyMuPDF
+2 split text into chunks
+3 generate embeddings using sentence-transformers
+4 store vectors in FAISS
+5 use RAG to summarize
+
+Output must be a **5 point summary**.
+
+Example output:
+
+```
+Summary
+
+1 new water policy announced
+2 budget allocation 25 crore
+3 implementation timeline 2026
+4 departments involved water resources and local bodies
+5 risk factors supply delays
+```
+
+---
+
+# 4 AI Speech Generator
+
+Generate political speeches using real constituency data.
+
+Input parameters
+
+* topic
+* audience type
+* constituency id
+
+Example inputs
+
+Topic: Development achievements
+Audience: Farmers
+
+Use template + LLM generation.
+
+Inject data from database.
+
+Example output:
+
+```
+Over 3420 farmers in our constituency have benefited from the PM Kisan scheme.
+12 irrigation projects have been completed benefiting 15 villages.
+```
+
+---
+
+# 5 Predictive Issue Alert System
+
+Detect emerging problems from complaint trends.
+
+Use simple analytics.
+
+Algorithms
+
+* moving averages
+* XGBoost classifier
+
+Example alert
+
+```
+Water complaints increased 40% in last 7 days in Ward 10
+
+Risk Level: HIGH
+
+Recommended Action: inspection
+```
+
+---
+
+# 6 Constituency Health Score
+
+Calculate a score between 0 and 100.
+
+Formula:
+
+Health Score =
+0.40 × Complaint Resolution
+
+* 0.30 × Sentiment Score
+* 0.30 × Scheme Coverage
+
+Color coding:
+
+Red < 40
+Amber 40-70
+Green > 70
+
+Display the score prominently on the dashboard.
+
+---
+
+# Database Schema
+
+Create PostgreSQL tables.
+
+Citizens
+
+```
+citizen_id
+booth_id
+age
+gender
+occupation
+income
+```
+
+Schemes
+
+```
+scheme_id
+scheme_name
+category
+budget
+department
+```
+
+Complaints
+
+```
+complaint_id
+citizen_id
+complaint_text
+category
+urgency_score
+location
+booth_id
+assigned_department
+status
+created_at
+resolved_at
+```
+
+Booth Metrics
+
+```
+booth_id
+sentiment_score
+health_score
+complaint_count
+resolved_complaints
+coverage_percentage
+```
+
+---
+
+# API Endpoints
+
+Implement FastAPI endpoints.
+
+```
+POST /api/complaints/ingest
+GET /api/dashboard/{constituency_id}
+POST /api/rag/query
+POST /api/files/summarize
+GET /api/booth/{booth_id}/analytics
+POST /api/speech/generate
+```
+
+---
+
+# Security
+
+Implement:
+
+JWT authentication
+Role based access control
+
+Roles
+
+Leader
+Admin
+Officer
+Viewer
+
+Use AES-256 encryption for sensitive fields.
+
+---
+
+# Mock Data
+
+Generate fake complaints using Faker.
+
+Fields
+
+```
+complaint_id
+citizen_name
+complaint_text
+category
+urgency
+booth_id
+created_at
+```
+
+Generate at least **1000 complaints**.
+
+---
+
+# Dashboard Layout
+
+Create a dashboard containing
+
+Top metrics
+
+* Constituency Health Score
+* Total complaints
+* Active alerts
+* Sentiment trend
+
+Sections
+
+* complaint heatmap
+* complaint category charts
+* predictive alerts
+* document summarizer
+* speech generator
+
+---
+
+# Demo Flow
+
+The demo should follow this sequence.
+
+1 open dashboard
+2 show health score
+3 show complaint heatmap
+4 upload a government PDF and show summary
+5 generate a speech
+6 show predictive alert
+
+---
+
+# Output Requirements
+
+The final prototype must include
+
+* working dashboard
+* complaint classifier
+* AI summarizer
+* speech generator
+* predictive alerts
+* heatmap visualization
+
+Focus on creating a **working demo prototype** rather than full production scale.
+
+---
+
+# End of Prompt
+
+---
+
+If you want, I can also give you a **MUCH stronger Replit Agent prompt (10x better)** that will make the agent build **the full app automatically in one go** with:
+
+* frontend
+* backend
+* AI models
+* database
+* Docker
+
+Most hackathon teams **lose hours fixing agent outputs**, but this version avoids that.
