@@ -1,0 +1,46 @@
+# AI Governance Co-Pilot — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# ── Web Framework ───────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9          # for file uploads
+
+# ── AI / LLM Orchestration ──────────────────────────────────────────────────────
+langchain==0.2.6
+langchain-community==0.2.6
+langchain-openai==0.1.13         # optional: comment out if not using OpenAI
+
+# ── NLP / Transformers ──────────────────────────────────────────────────────────
+transformers==4.41.2
+sentence-transformers==3.0.1
+torch==2.3.1                     # CPU version; use torch+cu118 for GPU
+
+# ── Vector Store ────────────────────────────────────────────────────────────────
+faiss-cpu==1.8.0                 # swap for faiss-gpu on GPU machines
+
+# ── PDF Processing ──────────────────────────────────────────────────────────────
+pymupdf==1.24.5
+
+# ── Predictive ML ───────────────────────────────────────────────────────────────
+xgboost==2.0.3
+lightgbm==4.3.0
+scikit-learn==1.5.0
+
+# ── Data & Templating ───────────────────────────────────────────────────────────
+pydantic==2.7.3
+jinja2==3.1.4
+pandas==2.2.2
+numpy==1.26.4
+
+# ── Mock Data Generation ────────────────────────────────────────────────────────
+faker==25.8.0
+
+# ── Database Drivers ────────────────────────────────────────────────────────────
+asyncpg==0.29.0                  # PostgreSQL async
+motor==3.4.0                     # MongoDB async
+neo4j==5.21.0                    # Neo4j graph DB
+
+# ── Security ────────────────────────────────────────────────────────────────────
+python-jose[cryptography]==3.3.0  # JWT
+passlib[bcrypt]==1.7.4
