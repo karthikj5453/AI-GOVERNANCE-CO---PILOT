@@ -107,7 +107,7 @@ async function seed() {
   await db.delete(boothMetricsTable);
   console.log("✓ Cleared existing data");
 
-  const complaints = [];
+  const complaints: any[] = [];
   const TOTAL_COMPLAINTS = 1000;
 
   for (let i = 0; i < TOTAL_COMPLAINTS; i++) {

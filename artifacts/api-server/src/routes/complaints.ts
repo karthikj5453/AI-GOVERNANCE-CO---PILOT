@@ -3,6 +3,7 @@ import { db } from "@workspace/db";
 import { complaintsTable } from "@workspace/db/schema";
 import { IngestComplaintBody, ListComplaintsQueryParams } from "@workspace/api-zod";
 import { eq, and, desc, count, sql } from "drizzle-orm";
+import { runGeminiPrompt } from "../lib/gemini";
 
 const router = Router();
 
@@ -45,28 +46,30 @@ const DEPARTMENTS: Record<string, string> = {
   Housing: "Housing Board",
 };
 
-const KEYWORDS: Record<string, string[]> = {
-  "Water Supply": ["water", "supply", "pipe", "tap", "leak", "shortage"],
-  "Roads & Transport": ["road", "pothole", "street", "bridge", "bus", "transport"],
-  Healthcare: ["hospital", "doctor", "medicine", "health", "ambulance", "medical"],
-  Education: ["school", "college", "teacher", "student", "education"],
-  Electricity: ["electricity", "power", "light", "current", "transformer", "outage"],
-  Sanitation: ["garbage", "waste", "sewage", "drain", "toilet", "sanitation"],
-  Agriculture: ["farm", "crop", "irrigation", "seed", "fertilizer", "agricultural"],
-  "Law & Order": ["police", "crime", "theft", "security", "law"],
-  Housing: ["house", "home", "shelter", "rent", "slum"],
-};
-
-function classifyComplaint(text: string): {
+interface ClassificationResult {
   category: string;
   subcategory: string;
   urgency: string;
   urgencyScore: number;
   department: string;
   estimatedResolutionTime: string;
-} {
+}
+
+function classifyComplaintMock(text: string): ClassificationResult {
   const lowerText = text.toLowerCase();
   let category = "Infrastructure";
+
+  const KEYWORDS: Record<string, string[]> = {
+    "Water Supply": ["water", "supply", "pipe", "tap", "leak", "shortage"],
+    "Roads & Transport": ["road", "pothole", "street", "bridge", "bus", "transport"],
+    Healthcare: ["hospital", "doctor", "medicine", "health", "ambulance", "medical"],
+    Education: ["school", "college", "teacher", "student", "education"],
+    Electricity: ["electricity", "power", "light", "current", "transformer", "outage"],
+    Sanitation: ["garbage", "waste", "sewage", "drain", "toilet", "sanitation"],
+    Agriculture: ["farm", "crop", "irrigation", "seed", "fertilizer", "agricultural"],
+    "Law & Order": ["police", "crime", "theft", "security", "law"],
+    Housing: ["house", "home", "shelter", "rent", "slum"],
+  };
 
   for (const [cat, keywords] of Object.entries(KEYWORDS)) {
     if (keywords.some((k) => lowerText.includes(k))) {
@@ -118,7 +121,26 @@ router.post("/ingest", async (req, res) => {
   }
 
   const { citizenName, complaintText, boothId, location } = parsed.data;
-  const classification = classifyComplaint(complaintText);
+
+  const prompt = `
+    Classify the following citizen complaint for a political governance dashboard:
+    Complaint: "${complaintText}"
+
+    Available Categories: ${CATEGORIES.join(", ")}
+    
+    Respond in JSON format with these fields:
+    - category: The most appropriate category from the list above.
+    - subcategory: A specific sub-issue (e.g., if category is Water, subcategory could be "Pipeline Leak").
+    - urgency: "High", "Medium", or "Low".
+    - urgencyScore: A number between 0 and 1.
+    - department: The government department responsible for this.
+    - estimatedResolutionTime: A string (e.g., "48 hours", "1 week").
+  `;
+
+  const classification = await runGeminiPrompt<ClassificationResult>(
+    prompt,
+    () => classifyComplaintMock(complaintText)
+  );
 
   const [inserted] = await db
     .insert(complaintsTable)
@@ -137,7 +159,7 @@ router.post("/ingest", async (req, res) => {
     })
     .returning();
 
-  res.status(201).json({
+  return res.status(201).json({
     complaintId: inserted.complaintId,
     category: inserted.category,
     subcategory: inserted.subcategory,
@@ -167,7 +189,7 @@ router.get("/", async (req, res) => {
     db.select({ count: count() }).from(complaintsTable).where(whereClause),
   ]);
 
-  res.json({
+  return res.json({
     complaints: complaints.map((c) => ({
       complaintId: c.complaintId,
       citizenName: c.citizenName,
