@@ -5,15 +5,14 @@
 ### An AI-Powered Intelligence Operating System for Political Leaders
 
 [![Hackathon Submission](https://img.shields.io/badge/Hackathon-Submission-8A2BE2.svg)](https://github.com/yourusername/ai-governance-copilot)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-green)](https://fastapi.tiangolo.com)
-[![Python](https://img.shields.io/badge/Python-3.11-blue)](https://python.org)
-[![Neo4j](https://img.shields.io/badge/Neo4j-5.15-4581C3)](https://neo4j.com)
+[![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+[![Express](https://img.shields.io/badge/Express-5-lightgrey)](https://expressjs.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini_AI-1.5_Flash-green)](https://aistudio.google.com/)
+[![Drizzle](https://img.shields.io/badge/Drizzle_ORM-0.45-orange)](https://orm.drizzle.team/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Transforming Reactive Administration into Predictive Leadership**
-
-[View Demo](https://your-demo-link.com) · [Report Bug](https://github.com/yourusername/ai-governance-copilot/issues) · [Request Feature](https://github.com/yourusername/ai-governance-copilot/issues)
+**Transforming Reactive Administration into Predictive Leadership with Gemini AI**
 
 </div>
 
@@ -21,89 +20,133 @@
 
 ## 📋 Table of Contents
 
-- [Team](#-team)
-- [Problem Statement](#-problem-statement)
-- [Solution](#-solution)
-- [System Architecture](#-system-architecture)
+- [Overview](#-overview)
 - [Technology Stack](#-technology-stack)
-- [Features & USP](#-features--usp)
+- [Key Features & Implementation](#-key-features--implementation)
+- [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Installation](#-installation)
 - [API Documentation](#-api-documentation)
-- [Demo](#-demo)
-- [References](#-references)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Acknowledgments](#-acknowledgments)
 
 ---
 
-## 🎯 Problem Statement
+## 💡 Overview
 
-### The Real-World Challenge
-
-Political leaders and government administrators face critical governance challenges that hinder effective decision-making and service delivery:
-
-| Challenge | Description | Impact |
-|-----------|-------------|---------|
-| **Data Overload** | Leaders receive information from complaint portals, scheme databases, social media, news reports, field workers, and meetings | Manual processing impossible, critical insights missed |
-| **Slow Decision Making** | Critical issues identified 7-14 days after emergence | Delayed response affects citizen trust |
-| **Poor Grievance Tracking** | Complaints lack proper tracking and departmental coordination | Low resolution rates, citizen dissatisfaction |
-| **Limited Ground Intelligence** | No real-time visibility into booth-level issues, scheme coverage gaps, citizen sentiment | Governance blind spots, resource misallocation |
-| **Fragmented Communication** | No centralized system for targeted citizen communication | Inefficient outreach, low scheme adoption |
-
-### Why This Matters
-
-- **Reduced citizen trust** in governance systems
-- **Wastage of government resources** and scheme allocations
-- **Escalation of local issues** into larger crises
-- **Inefficient allocation** of development funds
-- **Lack of accountability** in grievance redressal
-
-> *"72% of grievances remain unresolved beyond 30 days in many constituencies"*
+**AI Governance Co-Pilot** is a full-stack intelligence dashboard designed for political leaders and government administrators. It transforms fragmented citizen data, complaints, and policy documents into real-time, actionable insights using the **Google Gemini AI** engine.
 
 ---
 
-## 💡 Solution
+## 🛠 Technology Stack
 
-### AI Governance Co-Pilot: The Intelligence Operating System
+### Frontend
+- **React 19 & Vite**: Utilizing the latest React features for a high-performance UI.
+- **Tailwind CSS 4.0**: Modern styling with a utility-first approach.
+- **Radix UI & Shadcn/UI**: Accessible, high-quality component primitives.
+- **React Leaflet**: Interactive maps for geographical data visualization.
+- **Recharts**: Dynamic charting for administrative analytics.
+- **Wouter**: Lightweight routing for a seamless SPA experience.
 
-Our solution transforms fragmented administrative data into real-time, actionable insights through an integrated AI-powered platform.
+### Backend
+- **Express 5 (TypeScript)**: The next-gen Express framework for robust API development.
+- **Node.js 24**: Leveraging the latest LTS runtime features.
+- **Drizzle ORM**: A type-safe, lightweight ORM for high-performance database interactions.
+- **PostgreSQL**: Reliable relational data storage.
 
-### Key Capabilities
-
-| Capability | Description | Impact |
-|------------|-------------|---------|
-| **Data Aggregation** | Normalizes data from 10+ government and public sources | Unified view of constituency |
-| **AI-Powered Analytics** | Complaint classification, sentiment analysis, predictive modeling | Actionable intelligence |
-| **Real-Time Visualizations** | Health scores, heatmaps, trend analysis | Instant ground awareness |
-| **Intelligent Summarization** | 5-point summaries from lengthy documents | 90% time savings |
-| **Data-Backed Communication** | Speech generation with real statistics injection | Targeted, credible outreach |
-| **Predictive Alerts** | Early warning system for emerging issues | Prevent crises before escalation |
-
-### Innovation Highlights
-
-- **Retrieval-Augmented Generation (RAG)** for accurate, context-aware responses
-- **Zero Trust Security Architecture** suitable for government deployment
-- **Knowledge Graph** connecting citizens, schemes, booths, and departments
-- **On-Premise Deployment Option** for air-gapped government environments
+### AI & Intelligence
+- **Google Gemini 1.5 Flash**: SOTA large language model for real-time data processing and insight generation.
+- **Zod**: Runtime schema validation for end-to-end type safety.
+- **Orval**: Automated API client and React Query hook generation from OpenAPI specs.
 
 ---
 
-### Data Flow
+## ✨ Key Features & Implementation
 
-```mermaid
-graph LR
-    A[Data Sources] --> B[Ingestion Layer]
-    B --> C[(PostgreSQL)]
-    B --> D[(MongoDB)]
-    B --> E[(Neo4j)]
-    C --> F[AI Engine]
-    D --> F
-    E --> F
-    F --> G[Vector DB<br/>FAISS]
-    G --> H[RAG Pipeline]
-    H --> I[Applications]
-    I --> J[Dashboard]
-    I --> K[Alerts]
-    I --> L[Reports]
+What we built in this project:
+
+- **🚀 Automated Complaint Ingestion**: A robust pipeline that receives citizen complaints, uses Gemini AI to categorize them (Infrastructure, Healthcare, Education, etc.), and assigns priority levels automatically.
+- **🗺️ Constituency Heatmaps**: Geographical visualization of issues across different voting booths and sectors, allowing leaders to identify "hotspots" of public concern.
+- **📊 Executive Dashboard**: A high-level overview of administrative health, featuring sentiment trends, unresolved issue counts, and resource allocation metrics.
+- **📝 AI Document Intelligence**: A policy analysis tool that can ingest long government documents and generate concise 5-point summaries or impact assessments using Gemini AI.
+- **🎤 Data-Driven Speech Generator**: An intelligent tool for leaders to generate context-aware speeches based on real-time data from specific constituencies or demographics.
+- **🔔 Real-time Alerts**: An intelligent notification system that flags emerging crises or significant shifts in public sentiment before they escalate.
+- **🏗️ Industrial-Grade Architecture**: A full pnpm monorepo setup ensuring shared types and logic between the API, database schema, and frontend clients.
+
+---
+
+## 📂 Project Structure
+
+```text
+AI-GOVERNANCE-CO-PILOT/
+├── artifacts/              # Deployable applications
+│   ├── api-server/         # Express API server with Gemini AI integration
+│   └── governance-copilot/ # React frontend dashboard
+├── lib/                    # Shared libraries (The "Engine Room")
+│   ├── api-spec/           # OpenAPI 3.1 specifications
+│   ├── api-client-react/   # Type-safe React Query hooks (Auto-generated)
+│   ├── api-zod/            # Shared Zod validation schemas
+│   └── db/                 # Drizzle ORM schema & migrations
+└── scripts/                # Utility & Seeding scripts
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v24+)
+- pnpm (`npm install -g pnpm`)
+- PostgreSQL instance
+- **Google Gemini API Key** (Get one at [Google AI Studio](https://aistudio.google.com/app/apikey))
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/ai-governance-copilot.git
+   cd ai-governance-copilot/AI-GOVERNANCE-CO---PILOT
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Configure Environment**
+   Create a `.env` file in the root based on `.env.example`:
+   ```bash
+   GOOGLE_GENERATIVE_AI_API_KEY=your_key_here
+   DATABASE_URL=postgresql://user:password@localhost:5432/db_name
+   PORT=3000
+   ```
+
+4. **Seed the Database** (Optional - generates 1000 mock complaints)
+   ```bash
+   pnpm --filter @workspace/scripts run seed
+   ```
+
+### Running the Application
+
+Start both the API and Frontend in development mode:
+
+```bash
+# Start Backend
+pnpm --filter @workspace/api-server run dev
+
+# Start Frontend
+pnpm --filter @workspace/governance-copilot run dev
+```
+
+---
+
+## 🛡 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 🙏 Acknowledgments
+
+- Built for the AI Governance Hackathon.
+- UI components powered by Radix UI and Lucide React.
+- Maps provided by Leaflet.js.
