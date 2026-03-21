@@ -1,4 +1,3 @@
-# AI Governance Co-Pilot
 
 <div align="center">
 
