@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api-server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3000:3000"
+    environment:
+      # We tell the API Server to connect to the db service we declare below
+      - DATABASE_URL=${DATABASE_URL}     
+      # Make sure to pass your Google Gemini AI Key from your host environment
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+    restart: unless-stopped
+
